@@ -5,7 +5,12 @@ const Posts = require("../data/db");
 router.get("", (req, res) => {
   Posts.find()
     .then(posts => res.status(200).json({ success: true, posts }))
-    .catch(err => res.status(500).json({}));
+    .catch(err =>
+      res.status(500).json({
+        success: false,
+        error: "The posts information could not be retrieved"
+      })
+    );
 });
 
 router.post("", (req, res) => {
@@ -17,13 +22,50 @@ router.post("", (req, res) => {
         );
       })
       .catch(err => {
-        res.status(500).json({ success: false, err });
+        res.status(500).json({
+          success: false,
+          error: "There was an error while saving the post to the database"
+        });
       });
   } else {
     res.status(400).json({
       success: false,
       errorMessage: "Please provide title and contents for the post."
     });
+  }
+});
+
+//here I'm checking first if the comment has text - would it be better design to check if the post exists first?
+router.post("/:id/comments", (req, res) => {
+  const { id } = req.params;
+  const body = req.body.text;
+
+  if (req.body.text) {
+    Posts.findById(id).then(post => {
+      if (post.length > 0) {
+        Posts.insertComment({ text: body, post_id: Number(id) })
+          .then(commentID => {
+            Posts.findCommentById(commentID.id).then(comment =>
+              res.status(201).json(comment)
+            );
+          })
+          .catch(err =>
+            res.status(500).json({
+              error:
+                "There was an error while saving the comment to the database",
+              err
+            })
+          );
+      } else {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist." });
+      }
+    });
+  } else {
+    res
+      .status(400)
+      .json({ errorMessage: "Please provide text for the comment" });
   }
 });
 
