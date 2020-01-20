@@ -138,4 +138,30 @@ router.delete("/:id", (req, res) => {
     );
 });
 
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  Posts.findById(id).then(post => {
+    if (post.length > 0) {
+      if (body.title && body.contents) {
+        Posts.update(id, body).then(updatedPost => {
+          Posts.findById(id).then(post =>
+            res.status(200).json({ success: true, post })
+          );
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          errorMessage: "Please provide a title and contents for the post."
+        });
+      }
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "The post with the specified ID does not exist"
+      });
+    }
+  });
+});
+
 module.exports = router;
