@@ -13,6 +13,26 @@ router.get("", (req, res) => {
     );
 });
 
+router.get("/:id/comments", (req, res) => {
+  const { id } = req.params;
+  Posts.findById(id).then(post => {
+    console.log(post);
+    if (post.length > 0) {
+      Posts.findPostComments(id)
+        .then(comment => res.status(200).json(comment))
+        .catch(err =>
+          res
+            .status(500)
+            .json({ message: "The comments could not be retrieved" })
+        );
+    } else {
+      res
+        .status(404)
+        .json({ message: "The post with the specified ID does not exist" });
+    }
+  });
+});
+
 router.post("", (req, res) => {
   if (req.body.title && req.body.contents) {
     Posts.insert(req.body)
