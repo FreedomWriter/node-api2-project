@@ -69,8 +69,12 @@ export const CardBack = styled.div`
   ${CardSide};
   display: flex;
   text-align: center;
-  padding: 5% -15%;
+  /* padding: 5% -15%; */
+  overflow: scroll;
   transform: rotateY(-180deg);
+  align-items: center;
+  margin-top: 7.5%;
+  max-height: 70%;
 `;
 
 export const CardTitle = styled.h2`
@@ -87,7 +91,6 @@ export const CardDetail = styled.h2`
 export const CardDescription = styled.span`
   font-size: 1.2rem;
   padding: 5% 15%;
-  overflow: scroll;
 `;
 
 export const StyledButton = styled.button`
