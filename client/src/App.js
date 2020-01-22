@@ -54,17 +54,6 @@ function App() {
       .catch(err => console.log(err));
   }, []);
 
-  // useEffect(() => {
-  //   const getUserComments = id => {
-  //     axios
-  //       .get(`http://localhost:4000/api/posts/${id}/comments`)
-  //       .then(response => setComments(response.data.comment))
-  //       .catch(err => console.log(err));
-  //   };
-
-  //   getUserComments(id);
-  // }, [id]);
-
   const getUserComments = id => {
     axios
       .get(`http://localhost:4000/api/posts/${id}/comments`)
@@ -76,7 +65,7 @@ function App() {
   return (
     <div className="App">
       {/* <PostsContext.Provider value={{ data }}> */}
-      <h1>Hello from App.js</h1>
+
       <PostList
         posts={posts}
         comments={comments}

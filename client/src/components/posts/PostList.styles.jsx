@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const CardContainer = styled.div`
-  margin: 20% auto 5%;
+  margin: 5% auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   /* grid-auto-rows: true; */
